@@ -22,20 +22,20 @@
 
 1. 已知A, b, 如何求解Ax=b?對A, b有哪些要求？提示：從A的維度(dimension)和秩(rank)來分析。
 
-A: 可用高斯消去法求解。條件是，把$A$, $b$ 寫成 $\begin{bmatrix}A|b\end{bmatrix}$ 的 augmented matrix 的樣式的話，這個矩陣必須是 consistent 的，因爲 consistent 代表這個系統有一組或無限多組解。要怎麼求consistency？如果$b$是$A$的linear combination的話就有解，而這可以靠高斯消去法得到reduced row echelon form 來簡單看出來(這同時也表示，$rank(A)$跟$rank(\begin{bmatrix}A|b\end{bmatrix})$必須是一樣的才有解)。有幾組解？想要知道它有幾組解，我們可以求這個\begin{bmatrix}A|b\end{bmatrix}的rank跟nullity。如果它是consistent且nullity爲零，代表它有一組解；如果它是consistent且nullity不爲零，則有無限多解。
+A: 可用高斯消去法求解。條件是，把$A$, $b$ 寫成 $\begin{bmatrix}A|b\end{bmatrix}$ 的 augmented matrix 的樣式的話，這個矩陣必須是 consistent 的，因爲 consistent 代表這個系統有一組或無限多組解。要怎麼求consistency？如果$b$是$A$的linear combination的話就有解，而這可以靠高斯消去法得到reduced row echelon form 來簡單看出來(這同時也表示，$rank(A)$跟$rank(\begin{bmatrix}A|b\end{bmatrix})$必須是一樣的才有解)。有幾組解？想要知道它有幾組解，我們可以求這個$\begin{bmatrix}A|b\end{bmatrix}$的rank跟nullity。如果它是consistent且nullity爲零，代表它有一組解；如果它是consistent且nullity不爲零，則有無限多解。
 
 2. 高斯分佈是什麼？它的一維形式是什麼樣子？它的高維形式是什麼樣子？
 
 A: $N(\mu,\rho^2)$的PDE爲
 
 $$
-p(x) = \frac{1}{\sqrt(2\pi)\rho}exp(-\frac{1}{2}\frac{(x-\mu)^2}{\rho^2})
+p(x) = \frac{1}{\sqrt{2\pi}\rho}exp(-\frac{1}{2}\frac{(x-\mu)^2}{\rho^2})
 $$
 
 其高維形式爲
 
 $$
-p(x) = \frac{1}{\sqrt((2\pi)^N)det(\textbf{\Sigma})}exp(-\frac{1}{2} (\textbf{x}-\textbf{\mu})^T \textbf{\Sigma}^{-1} (\textbf{x}-\textbf{\mu}))
+p(x) = \frac{1}{\sqrt((2\pi)^N)det(\boldsymbol{\Sigma})} exp(-\frac{1}{2} (\boldsymbol{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\boldsymbol{x}-\boldsymbol{\mu}))
 $$
 
 3. 你知道 C++ 中的**類別**嗎？你知道 STL 嗎？你使用過它們嗎？
