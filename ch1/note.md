@@ -32,13 +32,13 @@ $$
 p(x) = \frac{1}{\sqrt{2\pi}\rho}exp(-\frac{1}{2}\frac{(x-\mu)^2}{\rho^2})
 $$
 
-其高維形式$X = \begin{bmatrix}X_1, ..., X_N\end{bmatrix}^T$爲
+其高維形式$X = \begin{bmatrix}X_1, \dots, X_N\end{bmatrix}^T$爲
 
 $$
 p(x) = \frac{1}{\sqrt{(2\pi)^N det(\boldsymbol{\Sigma})}} exp(-\frac{1}{2} (\boldsymbol{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\boldsymbol{x}-\boldsymbol{\mu}))
 $$
 
-其中$|\boldsymbol{\sigma}|$爲共變異數矩陣的行列式。（複習：共變異數的定義是$cov(X,Y)=E((X-\mu)(Y-\nu))=E(X\dotY)-\mu\nu$。）
+其中$|\boldsymbol{\Sigma}|$爲共變異數矩陣的行列式。（複習：共變異數的定義是$cov(X,Y)=E((X-\mu)(Y-\nu))=E(X\cdotY)-\mu\nu$。）
 
 3. 你知道 C++ 中的**類別**嗎？你知道 STL 嗎？你使用過它們嗎？
 
