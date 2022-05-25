@@ -42,7 +42,7 @@ $$
 
 3. 你知道 C++ 中的**類別**嗎？你知道 STL 嗎？你使用過它們嗎？
 
-A: 我在寫 [IQIF 模擬器](https://github.com/twetto/iq-neuron)的時候有用過一些基本的類別。特別在撰寫神經連結時我曾試用過`forward_list`，不過沒我用手刻的linked list 快，最後就沒用了。後來我才發現應該使用`vector`來實現adjacency list，不過還沒做，看看以後有沒有空弄吧。
+A: 我在寫 [IQIF 模擬器](https://github.com/twetto/iq-neuron)的時候有用過一些基本的類別。特別在撰寫神經連結時我曾試用過`forward_list`，不過沒我用手刻的linked list 快，最後就沒用了。後來我才發現應該使用`vector`來實現adjacency list，不過還沒做，看看以後有沒有空弄吧。編：我用了，沒比較快，是要怎樣才能快啊？不懂。
 
 4. 你以前怎樣書寫 C++ 程式？（你完全可以說只在 Visual C++ 6.0 下寫過 C++ 工程，只要你有寫 C++ 和 C 語言的經驗就行。）
 
