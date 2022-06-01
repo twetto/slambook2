@@ -43,8 +43,59 @@ $$
 ## 實踐
 
 教你怎麼在Linux用CMake做C++的Hello world，跳過。
-另外介紹使用KDevelop作爲IDE開發。不過因爲版本跟語言不同，我實際用起來有點卡卡。
+另外介紹使用KDevelop作爲IDE開發。不過因爲版本跟語言不同，我實際用起來有點卡卡，所以下面用KDev的習題我就不做了。
 
 ## 習題
 
+1. 閱讀文獻[@noauthor_survey_nodate]和[@graph__2013]，你能看懂其中的內容嗎？
 
+2. \*閱讀[@cadena_past_2016][@fuentes-pacheco_visual_2015][@boal_topological_2014][@chen_kalman_2012][@chen_recent_2007]。這些文獻中關於SLAM的看法與本書有何異同？
+
+3. g++指令有哪些參數？怎麼用參數改生成的程式名？
+
+A: 改名字用`-o <name>`。g++有很多參數，其中我比較常碰到的大概是連結庫跟最佳化方面的參數。像是`-march=armv7-a -mfloat-abi=hard -mfpu=neon -O2 ...`就是Arch Linux ARM在樹莓派上預設的參數，顧名思義就是指定你的CPU架構、有沒有硬體浮點運算、程式支援[NEON](https://developer.arm.com/Architectures/Neon)的話就利用它之類的。
+
+4. 使用build資料夾來編譯你的cmake工程，然後在KDevelop中試試。
+
+A: 略
+
+5. 可以在代碼中添加一些語法錯誤，看看編譯器會出什麼訊息。能看懂g++的錯誤訊息嗎？
+
+A: 可以不要嗎，平常看得夠多了。大部分是type error或沒include到函式庫、各版本函式庫呼叫的語法問題之類的。比方說，Eigen3.3.9跟Eigen3.4.0就曾經讓ROS本身編譯過不了(厲害吧，在Arch上ROS是要自己編譯的)。
+
+6. 如果忘記把庫連結到可執行程式上，編譯會報錯嗎？
+
+A: 直接把`CMakeLists.txt`最後一行`target_link_libraries(useHello hello_shared)`註解掉，在`make`時就會報如下的錯誤：
+
+```
+/usr/bin/ld: CMakeFiles/useHello.dir/useHello.cpp.o: in function `main':
+/home/twetto/Documents/graduated/slambook2/ch2/useHello.cpp:5: undefined reference to `printHello()'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/useHello.dir/build.make:97: useHello] Error 1
+make[1]: *** [CMakeFiles/Makefile2:167: CMakeFiles/useHello.dir/all] Error 2
+make: *** [Makefile:91: all] Error 2
+```
+
+`ld`就找不到`pringHello()`了。
+
+7. \*閱讀〘cmake實踐〙，瞭解cmake的其他語法。
+
+A: 有空再看。(雖然不是語法，參數方面我自己平常會用到的是指定安裝路徑的`-DCMAKE_INSTALL_PREFIX=/usr`。)
+
+8. \*完善Hello SLAM小程式，把它做成一個小庫，安裝到硬碟中。然後新建一個project並使用find\_package調用。
+
+A: 略。基本上要安裝到硬碟的話，就在`make`之後`sudo make install`就好了。如果使用Ubuntu的話，可以考慮使用`dpkg`來維護它(比方說`checkinstall`之類的)；Arch的話寫個PKGBUILD會比較方便用`pacman`管理(可以參考[IQIF的庫](https://github.com/twetto/iq-neuron/blob/master/PKGBUILD))，好處是解安裝比較方便，更新也可以[直接從github上抓下來](https://wiki.archlinux.org/title/VCS_package_guidelines)，太神啦。
+
+9. \*閱讀其他cmake教學材料，例如[https://github.com/TheErk/CMake-tutorial](https://github.com/TheErk/CMake-tutorial)。
+
+A: 看過了，馬上就忘了。慘。
+
+10. 找到KDevelop的官方網站，看看它還有哪些特性。你都用上了嗎？
+
+A: 略
+
+11. 如果在第一講學習了Vim，請試試KDevelop的Vim編輯功能。
+
+A: 略。看了下只找到navigation key binding之類的功能。好像也不是那麼必要？
+
+參考文章：
