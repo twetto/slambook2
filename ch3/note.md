@@ -31,7 +31,7 @@ $$
 
 **旋轉的歐氏變換:**
 
-兩個座標系$\textbf{e}, \textbf{e}$對於同一個點$\textbf{a}$的表示:
+兩個座標系$\textbf{e}', \textbf{e}$對於同一個點$\textbf{a}$的表示:
 
 $$
 \begin{bmatrix} \textbf{e}_1 & \textbf{e}_2 & \textbf{e}_3 \end{bmatrix}
@@ -47,6 +47,8 @@ $$
 \textbf{a}'_3
 \end{bmatrix}
 $$
+
+同時左乘$\begin{bmatrix} \textbf{e}^T_1 & \textbf{e}^T_2 & \textbf{e}^T_3\end{bmatrix}^T$
 
 ## 平移
 
