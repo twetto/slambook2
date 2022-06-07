@@ -64,8 +64,40 @@ $$
 \textbf{Ra}'
 $$
 
-$\textbf{R}$就是旋轉矩陣了。
+$\textbf{R}$就是旋轉矩陣了。這是一個正交矩陣，它的逆（同時也是轉置）描述了一個相反的旋轉。
 
-## 平移
+SO(n) = 特殊正交群, $RR^T = I, det(R) = 1$
+
+## +平移
+
+$$
+\begin{bmatrix}
+\textbf{a}' \\
+1
+\end{bmatrix} =
+\begin{bmatrix}
+\textbf{R} & \textbf{t} \\
+\textbf{0}^T & 1
+\end{bmatrix}
+\begin{bmatrix}
+\textbf{a} \\
+1
+\end{bmatrix} \triangleq
+\textbf{T}
+\begin{bmatrix}
+\textbf{a} \\
+1
+\end{bmatrix}
+$$
+
+R, t 構成了 SE(3) (詳細就不講了，打數學式子好麻煩)
+
+$$
+\textbf{T}^{-1} =
+\begin{bmatrix}
+\textbf{R}^T & -\textbf{R}^T\textbf{t} \\
+\textbf{0}^T & 1
+\end{bmatrix}
+$$
 
 ## 實踐：Eigen
