@@ -48,7 +48,23 @@ $$
 \end{bmatrix}
 $$
 
-同時左乘$\begin{bmatrix} \textbf{e}^T_1 & \textbf{e}^T_2 & \textbf{e}^T_3\end{bmatrix}^T$
+同時左乘$\begin{bmatrix} \textbf{e}^T_1 & \textbf{e}^T_2 & \textbf{e}^T_3 \end{bmatrix}^T$:
+
+$$
+\begin{bmatrix}
+\textbf{a}_1 \\
+\textbf{a}_2 \\
+\textbf{a}_3
+\end{bmatrix} = 
+\begin{bmatrix}
+\textbf{e}^T_1 \textbf{e}'_1 & \textbf{e}^T_1 \textbf{e}'_2 & \textbf{e}^T_1 \textbf{e}'_3 \\
+\textbf{e}^T_2 \textbf{e}'_1 & \textbf{e}^T_2 \textbf{e}'_2 & \textbf{e}^T_2 \textbf{e}'_3 \\
+\textbf{e}^T_3 \textbf{e}'_1 & \textbf{e}^T_3 \textbf{e}'_2 & \textbf{e}^T_3 \textbf{e}'_3
+\end{bmatrix} \triangleq
+\textbf{Ra}'
+$$
+
+$\textbf{R}$就是旋轉矩陣了。
 
 ## 平移
 
