@@ -24,7 +24,7 @@ a_1 b_2 - a_2 b_1
 a_3 & 0 & -a_1 \\
 -a_2 & a_1 & 0
 \end{bmatrix} \textbf{b} \triangleq
-\textbf{a} \wedge \textbf{b}
+\textbf{a}^\wedge \textbf{b}
 $$
 
 ## 平移
