@@ -29,13 +29,13 @@ $$
 
 其中$\textbf{a}^\wedge$爲反對稱矩陣($\textbf{A}^T = -\textbf{A}$)；它跟$\textbf{a}$是對射(或稱一一映射, bijection)關係。
 
-**旋轉的歐氏變換：**
+旋轉的歐氏變換:
 
-兩個座標系$\textbf{e}, \textbf{e}'$對於同一個點$\textbf{a}$的表示：
+兩個座標系$\textbf{e}, \textbf{e}$對於同一個點$\textbf{a}$的表示:
+
 $$
 \begin{bmatrix} \textbf{e}_1 & \textbf{e}_2 & \textbf{e}_3 \end{bmatrix}
-\begin{bmatrix} \textbf{a}_1 \\ \textbf{a}_2 \\ \textbf{a}_3 \end{bmatrix}
-=
+\begin{bmatrix} \textbf{a}_1 \\ \textbf{a}_2 \\ \textbf{a}_3 \end{bmatrix} = 
 \begin{bmatrix} \textbf{e}'_1 & \textbf{e}'_2 & \textbf{e}'_3 \end{bmatrix}
 \begin{bmatrix} \textbf{a}'_1 \\ \textbf{a}'_2 \\ \textbf{a}'_3 \end{bmatrix}
 $$
