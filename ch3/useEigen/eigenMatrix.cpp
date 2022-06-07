@@ -26,6 +26,8 @@ int main(int argc, char **argv) {
   Vector3d v_3d;
   // 这是一样的
   Matrix<float, 3, 1> vd_3d;
+  // 騙你的！其實是這樣才對
+  // Matrix<double, 3, 1> vd_3d;
 
   // Matrix3d 实质上是 Eigen::Matrix<double, 3, 3>
   Matrix3d matrix_33 = Matrix3d::Zero(); //初始化为零
@@ -41,7 +43,7 @@ int main(int argc, char **argv) {
   // 输出
   cout << "matrix 2x3 from 1 to 6: \n" << matrix_23 << endl;
 
-  // 用()访问矩阵中的元素
+  // 用()访问矩阵中的元素(是用"()"，不是"[]"!)
   cout << "print matrix 2x3: " << endl;
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 3; j++) cout << matrix_23(i, j) << "\t";
