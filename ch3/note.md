@@ -35,9 +35,17 @@ $$
 
 $$
 \begin{bmatrix} \textbf{e}_1 & \textbf{e}_2 & \textbf{e}_3 \end{bmatrix}
-\begin{bmatrix} \textbf{a}_1 \\ \textbf{a}_2 \\ \textbf{a}_3 \end{bmatrix} = 
+\begin{bmatrix}
+\textbf{a}_1 \\
+\textbf{a}_2 \\
+\textbf{a}_3
+\end{bmatrix} = 
 \begin{bmatrix} \textbf{e}'_1 & \textbf{e}'_2 & \textbf{e}'_3 \end{bmatrix}
-\begin{bmatrix} \textbf{a}'_1 \\ \textbf{a}'_2 \\ \textbf{a}'_3 \end{bmatrix}
+\begin{bmatrix}
+\textbf{a}'_1 \\
+\textbf{a}'_2 \\
+\textbf{a}'_3
+\end{bmatrix}
 $$
 
 ## 平移
