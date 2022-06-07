@@ -11,7 +11,7 @@ $$
 \textbf{a} \times \textbf{b} =
 \begin{Vmatrix}
 \textbf{e}_1 & \textbf{e}_2 & \textbf{e}_3 \\
-a_1 & a_2 & $a_3 \\
+a_1 & a_2 & a_3 \\
 b_1 & b_2 & b_3
 \end{Vmatrix} =
 \begin{bmatrix}
@@ -24,7 +24,7 @@ a_1 b_2 - a_2 b_1
 a_3 & 0 & -a_1 \\
 -a_2 & a_1 & 0
 \end{bmatrix} \textbf{b} \triangleq
-\textbf{a} \^ \textbf{b}
+\textbf{a} \wedge \textbf{b}
 $$
 
 ## 平移
