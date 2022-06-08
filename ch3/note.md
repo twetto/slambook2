@@ -134,4 +134,26 @@ A: 具體請參考[維基百科的頁面](https://en.wikipedia.org/wiki/Rodrigue
 
 **驗證四元數旋轉某個點後，結果是一個虛四元數（實部爲零），所以仍然對應到一個三維空間點。**
 
-A: 
+A: 四元數$\textbf{q}$旋轉點$\textbf{p}$成點$\textbf{p}'$是這樣：
+
+$$
+\textbf{p}' = \textbf{q}\textbf{p}\textbf{q}^{-1}
+$$
+
+設$\textbf{p} = [0,p_x,p_y,p_z]^T$, $\textbf{q} = q_s + q_xi + q_yj + q_zk$，開始旋轉：
+
+$$
+\begin{align}
+\textbf{p}' &= \textbf{q}\textbf{p}\textbf{q}^{-1}
+&= \textbf{q} (0 + p_xi + p_yj + p_zk) (q_s - q_xi - q_yj - q_zk)
+&= \textbf{q} (p_xiq_s - p_xiq_xi - p_xiq_yj - p_xiq_zk
+             + p_yjq_s - p_yjq_xi - p_yjq_yj - p_yjq_zk
+             + p_zkq_s - p_zkq_xi - p_zkq_yj - p_zkq_zk)
+&= \textbf{q} (p_xq_x  + p_yq_y  + p_zq_z
+             + p_xq_si - p_yq_zi + p_zq_yi
+             + p_yq_sj + p_xq_zj - p_zq_xj
+             + p_zq_sk - p_xq_yk + p_yq_xk)
+\end{align}
+$$
+
+這邊我們偷懶(又愉快)地假設$\textbf{q}$是一個單位四元數，這樣它的逆就等於它的共軛。
