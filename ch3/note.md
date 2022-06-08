@@ -168,3 +168,30 @@ $$
 $$
 
 這邊我們偷懶(又愉快)地假設$\textbf{q}$是一個單位四元數，這樣它的逆就等於它的共軛。
+
+**畫表總結旋轉矩陣、軸角、歐拉角、四元數的轉換關係。**
+
+A: 轉換關係如下：
+
+旋轉矩陣 <-> 軸角: 羅德里格斯公式(式3.15, 3.17)
+
+旋轉矩陣 <-> 四元數: 式3.39
+
+四元數 <-> 軸角: 式3.44
+
+至於歐拉角，我會習慣先轉成矩陣再轉成別的，以rpy角爲例，具體方式參考[維基](https://zh.wikipedia.org/zh-tw/%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5#%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4)。
+
+**假設有一個大的Eigen矩陣，想把它的左上角3$\times$3的塊取出來，然後賦值爲$\textbf{I}_{3\times3}$。請編程實現。**
+
+A: 可以使用`block()`取出：
+
+```cpp
+Matrix<double, 10, 10> matrix_10_10 = MatrixXd::Random(10, 10);
+matrix_10_10.block(0,0,3,3) << MatrixXd::Identity(3, 3);
+```
+
+具體我實作在[範例程式](./useEigen/eigenMatrix.cpp)裡。
+
+**一般線性方程$\textbf{Ax}=\textbf{b}$有哪幾種做法？你能在Eigen中實現嗎？**
+
+A: 我假設是指解方程組。參考[官方文檔](https://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html)，大致能分成LU分解、QR分解、Cholesky分解、SVD分解。要選那一種要看方程本身是否超定/欠定(用SVD)、正定/負半定、方程大小、對精度/速度的tradeoff、是否良置/病態。
