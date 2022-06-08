@@ -115,5 +115,19 @@ int main(int argc, char **argv) {
        << 1000 * (clock() - time_stt) / (double) CLOCKS_PER_SEC << "ms" << endl;
   cout << "x = " << x.transpose() << endl;
 
+  // 習題
+  Matrix<double, 10, 10> matrix_10_10 = MatrixXd::Random(10, 10);
+  cout << "matrix 10x10: " << endl;
+  for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 10; j++) cout << matrix_10_10(i, j) << "\t";
+    cout << endl;
+  }
+  matrix_10_10.block(0,0,3,3) << MatrixXd::Identity(3, 3);
+  cout << "matrix 10x10 after assignment: " << endl;
+  for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 10; j++) cout << matrix_10_10(i, j) << "\t";
+    cout << endl;
+  }
+
   return 0;
 }
