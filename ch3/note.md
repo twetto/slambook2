@@ -162,7 +162,7 @@ $$
  &+ q_yjp_xq_x  + q_yjp_yq_y  + q_yjp_zq_z + q_yjp_xq_si - q_yjp_yq_zi + q_yjp_zq_yi + q_yjp_yq_sj + q_yjp_xq_zj - q_yjp_zq_xj + q_yjp_zq_sk - q_yjp_xq_yk + q_yjp_yq_xk \\
  &+ q_zkp_xq_x  + q_zkp_yq_y  + q_zkp_zq_z + q_zkp_xq_si - q_zkp_yq_zi + q_zkp_zq_yi + q_zkp_yq_sj + q_zkp_xq_zj - q_zkp_zq_xj + q_zkp_zq_sk - q_zkp_xq_yk + q_zkp_yq_xk \\
 &= q_sp_xq_x + q_sp_yq_y + q_sp_zq_z - q_xp_xq_s + q_xp_yq_z - q_xp_zq_y - q_yp_yq_s - q_yp_xq_z + q_yp_zq_x - q_zp_zq_s + q_zp_xq_y - q_zp_yq_x \\
- &+ 一堆虛部
+ &+ 一堆虛部 \\
 &= 只剩虛部(我好懶)
 \end{align}
 $$
