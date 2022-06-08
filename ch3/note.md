@@ -60,6 +60,11 @@ $$
 \textbf{e}^T_1 \textbf{e}'_1 & \textbf{e}^T_1 \textbf{e}'_2 & \textbf{e}^T_1 \textbf{e}'_3 \\
 \textbf{e}^T_2 \textbf{e}'_1 & \textbf{e}^T_2 \textbf{e}'_2 & \textbf{e}^T_2 \textbf{e}'_3 \\
 \textbf{e}^T_3 \textbf{e}'_1 & \textbf{e}^T_3 \textbf{e}'_2 & \textbf{e}^T_3 \textbf{e}'_3
+\end{bmatrix}
+\begin{bmatrix}
+\textbf{a}'_1 \\
+\textbf{a}'_2 \\
+\textbf{a}'_3
 \end{bmatrix} \triangleq
 \textbf{Ra}'
 $$
