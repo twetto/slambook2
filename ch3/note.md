@@ -192,6 +192,8 @@ matrix_10_10.block(0,0,3,3) << MatrixXd::Identity(3, 3);
 
 具體我實作在[範例程式](./useEigen/eigenMatrix.cpp)裡。
 
+需要注意的是，在使用`vector`相關的函式，例如像`dot()`的時候，要儘量避免使用`block()`，改爲使用`head()`, `tail()`, `segment()`；不然會出現`static_assert failed`的情況。我曾經在編譯[OpenVINS](https://github.com/rpng/open_vins)的時候遇到[類似的問題](https://github.com/rpng/open_vins/commit/c89f14f143e2058e9201025453b9dd07b443a49d)。
+
 **一般線性方程$\textbf{Ax}=\textbf{b}$有哪幾種做法？你能在Eigen中實現嗎？**
 
 A: 我假設是指解方程組。參考[官方文檔](https://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html)，大致能分成LU分解、QR分解、Cholesky分解、SVD分解。要選那一種要看方程本身是否超定/欠定(用SVD)、正定/負半定、方程大小、對精度/速度的tradeoff、是否良置/病態。
