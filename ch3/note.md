@@ -144,11 +144,11 @@ $$
 
 $$
 \begin{align}
-\textbf{p}' &= \textbf{q}\textbf{p}\textbf{q}^{-1}
-&= \textbf{q} (0 + p_xi + p_yj + p_zk) (q_s - q_xi - q_yj - q_zk)
+\textbf{p}' &= \textbf{q}\textbf{p}\textbf{q}^{-1} \\
+&= \textbf{q} (0 + p_xi + p_yj + p_zk) (q_s - q_xi - q_yj - q_zk) \\
 &= \textbf{q} (p_xiq_s - p_xiq_xi - p_xiq_yj - p_xiq_zk
              + p_yjq_s - p_yjq_xi - p_yjq_yj - p_yjq_zk
-             + p_zkq_s - p_zkq_xi - p_zkq_yj - p_zkq_zk)
+             + p_zkq_s - p_zkq_xi - p_zkq_yj - p_zkq_zk) \\
 &= \textbf{q} (p_xq_x  + p_yq_y  + p_zq_z
              + p_xq_si - p_yq_zi + p_zq_yi
              + p_yq_sj + p_xq_zj - p_zq_xj
