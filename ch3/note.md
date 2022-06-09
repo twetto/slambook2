@@ -183,8 +183,8 @@ $$
 $$
 \begin{align}
 \textbf{p}' &= \textbf{q}\textbf{p}\textbf{q}^{-1} \\
-&= \textbf{q} [s_ps_q-\textbf{v_p}^T\textbf{-v_q}, s_p\textbf{-v_q} + s_q\textbf{v_p} + \textbf{v_p} \times \textbf{-v_q}]^T \\
-&= \textbf{q} [s_ps_q+\textbf{v_p}^T\textbf{v_q}, -s_p\textbf{v_q} + s_q\textbf{v_p} - \textbf{v_p} \times \textbf{v_q}]^T
+&= \textbf{q} [s_ps_q - \textbf{v_p}^T \textbf{-v_q}, s_p \textbf{-v_q} + s_q \textbf{v_p} + \textbf{v_p} \times \textbf{-v_q}]^T \\
+&= \textbf{q} [s_ps_q + \textbf{v_p}^T \textbf{v_q}, -s_p \textbf{v_q} + s_q \textbf{v_p} - \textbf{v_p} \times \textbf{v_q}]^T
 \end{align}
 $$
 
