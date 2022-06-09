@@ -178,18 +178,18 @@ $$
 \end{align}
 $$
 
-或者也可以用向量形式計算：
+或者也可以用向量形式計算($\textbf{p} = [s_p(=0), \textbf{v}_p]^T, \textbf{q} = [s_q, \textbf{v}_q]^T$)：
 
 $$
 \begin{align}
 \textbf{p}' &= \textbf{q}\textbf{p}\textbf{q}^{-1} \\
 &= \textbf{q} [s_p s_q - \textbf{v}_p \cdot (-\textbf{v}_q), s_p (-\textbf{v}_q) + s_q \textbf{v}_p + \textbf{v}_p \times (-\textbf{v}_q)]^T \\
 &= \textbf{q} [s_p s_q + \textbf{v}_p \cdot \textbf{v}_q, -s_p \textbf{v}_q + s_q \textbf{v}_p - \textbf{v}_p \times \textbf{v}_q]^T \\
-&= [s_q (s_ps_q + \textbf{v}_p \cdot \textbf{v}_q) - \textbf{v}_q \cdot (-s_p \textbf{v}_q + s_q \textbf{v}_p - \textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
-&= [s_q^2s_p + s_q\textbf{v}_p \cdot \textbf{v}_q + s_p\textbf{v}_q \cdot\textbf{v}_q - s_q\textbf{v}_q \cdot\textbf{v}_p - \textbf{v}_q \cdot(\textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
-&= [s_q^2s_p + s_p - \textbf{v}_q \cdot (\textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
-&= [s_q^2s_p + s_p - \textbf{v}_p \cdot (\textbf{v}_q \times \textbf{v}_q), 虛部]^T \\
-&= [s_q^2s_p + s_p, 虛部]^T \\
+&= \textbf{q} [\textbf{v}_p \cdot \textbf{v}_q, s_q \textbf{v}_p - \textbf{v}_p \times \textbf{v}_q]^T \\
+&= [s_q (\textbf{v}_p \cdot \textbf{v}_q) - \textbf{v}_q \cdot (s_q \textbf{v}_p - \textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
+&= [s_q(\textbf{v}_p \cdot \textbf{v}_q) - s_q(\textbf{v}_q \cdot\textbf{v}_p) - \textbf{v}_q \cdot(\textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
+&= [- \textbf{v}_q \cdot (\textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
+&= [- \textbf{v}_p \cdot (\textbf{v}_q \times \textbf{v}_q), 虛部]^T \\
 &= [0, 虛部]^T \\
 \end{align}
 $$
