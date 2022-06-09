@@ -183,8 +183,14 @@ $$
 $$
 \begin{align}
 \textbf{p}' &= \textbf{q}\textbf{p}\textbf{q}^{-1} \\
-&= \textbf{q} [s_ps_q - \textbf{v_p}^T \textbf{-v_q}, s_p \textbf{-v_q} + s_q \textbf{v_p} + \textbf{v_p} \times \textbf{-v_q}]^{T} \\
-&= \textbf{q} [s_ps_q + \textbf{v_p}^T \textbf{v_q}, -s_p \textbf{v_q} + s_q \textbf{v_p} - \textbf{v_p} \times \textbf{v_q}]^{T}
+&= \textbf{q} [s_p s_q - \textbf{v}_p \cdot (-\textbf{v}_q), s_p (-\textbf{v}_q) + s_q \textbf{v}_p + \textbf{v}_p \times (-\textbf{v}_q)]^T \\
+&= \textbf{q} [s_p s_q + \textbf{v}_p \cdot \textbf{v}_q, -s_p \textbf{v}_q + s_q \textbf{v}_p - \textbf{v}_p \times \textbf{v}_q]^T \\
+&= [s_q (s_ps_q + \textbf{v}_p \cdot \textbf{v}_q) - \textbf{v}_q \cdot (-s_p \textbf{v}_q + s_q \textbf{v}_p - \textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
+&= [s_q^2s_p + s_q\textbf{v}_p \cdot \textbf{v}_q + s_p\textbf{v}_q \cdot\textbf{v}_q - s_q\textbf{v}_q \cdot\textbf{v}_p - \textbf{v}_q \cdot(\textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
+&= [s_q^2s_p + s_p - \textbf{v}_q \cdot (\textbf{v}_p \times \textbf{v}_q), 虛部]^T \\
+&= [s_q^2s_p + s_p - \textbf{v}_p \cdot (\textbf{v}_q \times \textbf{v}_q), 虛部]^T \\
+&= [s_q^2s_p + s_p, 虛部]^T \\
+&= [0, 虛部]^T \\
 \end{align}
 $$
 
