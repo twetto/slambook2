@@ -79,7 +79,18 @@ SO(n) = 特殊正交群, $RR^T = I, det(R) = 1$
 
 **歐拉角**: 最直觀的yaw-pitch-roll(rpy, ZYX方向)旋轉角。有萬向鎖問題，不適合做計算，只適合debug時方便人類理解。也有奇異性。
 
-**四元數**: 沒奇異性，也不像旋轉矩陣那麼大。不過計算比較複雜。
+**四元數**: 沒奇異性，也不像旋轉矩陣那麼大。不過機制比較複雜。大部分VIO算法在做pre-integration時都使用四元數。
+
+四元數可以看作複數的延伸，只不過虛部從一個i變三個i, j, k。
+
+i, j, k 相乘的規則是這樣：
+
+$$
+ii = jj = kk = -1
+ij = k, ji = -k
+jk = i, kj = -i
+ki = j, ik = -j
+$$
 
 **各個旋轉表示法之間的轉換**: 詳見習題
 
@@ -164,6 +175,16 @@ $$
 &= q_sp_xq_x + q_sp_yq_y + q_sp_zq_z - q_xp_xq_s + q_xp_yq_z - q_xp_zq_y - q_yp_yq_s - q_yp_xq_z + q_yp_zq_x - q_zp_zq_s + q_zp_xq_y - q_zp_yq_x \\
  &+ 一堆虛部 \\
 &= 只剩虛部(我好懶)
+\end{align}
+$$
+
+或者也可以用向量形式計算：
+
+$$
+\begin{align}
+\textbf{p}' &= \textbf{q}\textbf{p}\textbf{q}^{-1} \\
+&= \textbf{q} [s_ps_q-\textbf{v_p}^T\textbf{-v_q}, s_p\textbf{-v_q} + s_q\textbf{v_p} + \textbf{v_p} \times \textbf{-v_q}]^T
+&= \textbf{q} [s_ps_q+\textbf{v_p}^T\textbf{v_q}, -s_p\textbf{v_q} + s_q\textbf{v_p} - \textbf{v_p} \times \textbf{v_q}]^T
 \end{align}
 $$
 
