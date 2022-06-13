@@ -28,7 +28,7 @@ SurfelCloudPtr reconstructSurface(
     mls.setSearchRadius(radius);
     mls.setComputeNormals(true);
     mls.setSqrGaussParam(radius * radius);
-    mls.setPolynomialFit(polynomial_order > 1);
+    //mls.setPolynomialFit(polynomial_order > 1);
     mls.setPolynomialOrder(polynomial_order);
     mls.setInputCloud(input);
     SurfelCloudPtr output(new SurfelCloud);
