@@ -1,0 +1,46 @@
+# This is an example PKGBUILD file. Use this as a start to creating your own,
+# and remove these comments. For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# The following guidelines are specific to BZR, GIT, HG and SVN packages.
+# Other VCS sources are not natively supported by makepkg yet.
+
+# Maintainer: twetto <franky85912@gmail.com>
+pkgname=sophus-git
+pkgver=22.04.1.r2.g785fef3
+pkgrel=1
+pkgdesc="C++ implementation of Lie Groups using Eigen."
+arch=('any')
+url="https://github.com/strasdat/Sophus"
+license=('custom')
+depends=('eigen')
+makedepends=('git' 'gcc' 'cmake') # 'bzr', 'git', 'mercurial' or 'subversion'
+source=('git+https://github.com/strasdat/Sophus')
+sha256sums=('SKIP')
+
+# Please refer to the 'USING VCS SOURCES' section of the PKGBUILD man page for
+# a description of each element in the source array.
+
+pkgver() {
+	cd "$srcdir/Sophus"
+
+# Git, tags available
+    printf "%s" "$(git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g')"
+
+}
+
+build() {
+	cd "$srcdir/Sophus"
+    cmake -B build -S "$srcdir/Sophus" \
+        -DCMAKE_INSTALL_PREFIX='/usr' \
+        -DSOPHUS_INSTALL=ON \
+        -DCMAKE_CXX_STANDARD=14
+        #-DSOPHUS_USE_BASIC_LOGGING=ON \
+    make -C build
+}
+
+package() {
+	cd "$srcdir/Sophus/build"
+	make DESTDIR="$pkgdir/" install
+}
