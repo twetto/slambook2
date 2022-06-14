@@ -14,12 +14,15 @@ include_directories("/usr/include/eigen3")
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 # Sophus
+find_package(fmt REQUIRED)
+set(FMT_LIBRARIES fmt::fmt)
 find_package(Sophus REQUIRED)
 include_directories(${Sophus_INCLUDE_DIRS})
 
 set(THIRD_PARTY_LIBS
         ${OpenCV_LIBS}
-        ${Sophus_LIBRARIES})
+        ${Sophus_LIBRARIES}
+        ${FMT_LIBRARIES})
 
 add_executable(dense_mapping dense_mapping.cpp)
 target_link_libraries(dense_mapping ${THIRD_PARTY_LIBS})
