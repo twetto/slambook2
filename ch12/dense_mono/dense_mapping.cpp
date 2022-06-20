@@ -202,12 +202,18 @@ int main(int argc, char **argv) {
         cout << "*** loop " << index << " ***" << endl;
         Mat curr = imread(color_image_files[index], 0);
         if (curr.data == nullptr) continue;
+        printf("imread ok\n");
         SE3d pose_curr_TWC = poses_TWC[index];
         SE3d pose_T_C_R = pose_curr_TWC.inverse() * pose_ref_TWC;   // 坐标转换关系： T_C_W * T_W_R = T_C_R
+        printf("pose ok\n");
         update(ref, curr, pose_T_C_R, depth, depth_cov2);
+        printf("update ok\n");
         evaludateDepth(ref_depth, depth);
+        printf("evaluate ok\n");
         plotDepth(ref_depth, depth);
+        printf("plot ok\n");
         imshow("image", curr);
+        printf("imshow ok\n");
         waitKey(1);
     }
 
@@ -258,8 +264,9 @@ bool readDatasetFiles(
 
 // 对整个深度图进行更新
 bool update(const Mat &ref, const Mat &curr, const SE3d &T_C_R, Mat &depth, Mat &depth_cov2) {
-    for (int x = boarder; x < width - boarder; x++)
-        for (int y = boarder; y < height - boarder; y++) {
+    int x, y;
+    for (x = boarder; x < width - boarder; x++) {
+        for (y = boarder; y < height - boarder; y++) {
             // 遍历每个像素
             if (depth_cov2.ptr<double>(y)[x] < min_cov || depth_cov2.ptr<double>(y)[x] > max_cov) // 深度已收敛或发散
                 continue;
@@ -277,8 +284,9 @@ bool update(const Mat &ref, const Mat &curr, const SE3d &T_C_R, Mat &depth, Mat 
                 epipolar_direction
             );
 
-            if (ret == false) // 匹配失败
+            if (ret == false) { // 匹配失败
                 continue;
+            }
 
             // 取消该注释以显示匹配
             // showEpipolarMatch(ref, curr, Vector2d(x, y), pt_curr);
@@ -286,6 +294,9 @@ bool update(const Mat &ref, const Mat &curr, const SE3d &T_C_R, Mat &depth, Mat 
             // 匹配成功，更新深度图
             updateDepthFilter(Vector2d(x, y), pt_curr, T_C_R, epipolar_direction, depth, depth_cov2);
         }
+    }
+    printf("out of loop\n");
+    return true;
 }
 
 // 极线搜索
