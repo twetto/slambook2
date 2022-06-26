@@ -15,6 +15,9 @@ using Sophus::SE3d;
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+// for openmp
+#include <omp.h>
+
 using namespace Eigen;
 
 #include <opencv2/core/core.hpp>
@@ -178,6 +181,7 @@ int main(int argc, char **argv) {
         cout << "Usage: dense_mapping path_to_test_dataset" << endl;
         return -1;
     }
+    omp_set_num_threads(4);
 
     // 从数据集读取数据
     vector<string> color_image_files;
@@ -197,28 +201,26 @@ int main(int argc, char **argv) {
     double init_cov2 = 3.0;     // 方差初始值
     Mat depth(height, width, CV_64F, init_depth);             // 深度图
     Mat depth_cov2(height, width, CV_64F, init_cov2);         // 深度图方差
+    Mat depth_uint8(height, width, CV_8UC1);                  // 輸出圖像
 
     for (int index = 1; index < color_image_files.size(); index++) {
         cout << "*** loop " << index << " ***" << endl;
         Mat curr = imread(color_image_files[index], 0);
         if (curr.data == nullptr) continue;
-        printf("imread ok\n");
         SE3d pose_curr_TWC = poses_TWC[index];
         SE3d pose_T_C_R = pose_curr_TWC.inverse() * pose_ref_TWC;   // 坐标转换关系： T_C_W * T_W_R = T_C_R
-        printf("pose ok\n");
         update(ref, curr, pose_T_C_R, depth, depth_cov2);
-        printf("update ok\n");
         evaludateDepth(ref_depth, depth);
-        printf("evaluate ok\n");
         plotDepth(ref_depth, depth);
-        printf("plot ok\n");
         imshow("image", curr);
-        printf("imshow ok\n");
         waitKey(1);
     }
 
     cout << "estimation returns, saving depth map ..." << endl;
-    imwrite("depth.png", depth);
+    depth = abs(depth);
+    threshold(depth, depth,  0.0, 1.0, THRESH_TRUNC);
+    normalize(depth, depth_uint8, 0, 255, NORM_MINMAX, CV_8UC1);
+    imwrite("depth.png", depth_uint8);
     cout << "done." << endl;
 
     return 0;
@@ -264,38 +266,43 @@ bool readDatasetFiles(
 
 // 对整个深度图进行更新
 bool update(const Mat &ref, const Mat &curr, const SE3d &T_C_R, Mat &depth, Mat &depth_cov2) {
-    int x, y;
-    for (x = boarder; x < width - boarder; x++) {
-        for (y = boarder; y < height - boarder; y++) {
-            // 遍历每个像素
-            if (depth_cov2.ptr<double>(y)[x] < min_cov || depth_cov2.ptr<double>(y)[x] > max_cov) // 深度已收敛或发散
-                continue;
-            // 在极线上搜索 (x,y) 的匹配
-            Vector2d pt_curr;
-            Vector2d epipolar_direction;
-            bool ret = epipolarSearch(
-                ref,
-                curr,
-                T_C_R,
-                Vector2d(x, y),
-                depth.ptr<double>(y)[x],
-                sqrt(depth_cov2.ptr<double>(y)[x]),
-                pt_curr,
-                epipolar_direction
-            );
+    #pragma omp parallel
+    {
+        int x, y;
+        #pragma omp for
+        for (x = boarder; x < width - boarder; x++) {
+            for (y = boarder; y < height - boarder; y++) {
+                // 遍历每个像素
+                if (depth_cov2.ptr<double>(y)[x] < min_cov || depth_cov2.ptr<double>(y)[x] > max_cov) // 深度已收敛或发散
+                    continue;
+                // 在极线上搜索 (x,y) 的匹配
+                Vector2d pt_curr;
+                Vector2d epipolar_direction;
+                bool ret = epipolarSearch(
+                    ref,
+                    curr,
+                    T_C_R,
+                    Vector2d(x, y),
+                    depth.ptr<double>(y)[x],
+                    sqrt(depth_cov2.ptr<double>(y)[x]),
+                    pt_curr,
+                    epipolar_direction
+                );
 
-            if (ret == false) { // 匹配失败
-                continue;
+                if (ret == false) { // 匹配失败
+                    continue;
+                }
+
+                // 取消该注释以显示匹配
+                // showEpipolarMatch(ref, curr, Vector2d(x, y), pt_curr);
+
+                // 匹配成功，更新深度图
+                updateDepthFilter(Vector2d(x, y), pt_curr, T_C_R, epipolar_direction, depth, depth_cov2);
             }
-
-            // 取消该注释以显示匹配
-            // showEpipolarMatch(ref, curr, Vector2d(x, y), pt_curr);
-
-            // 匹配成功，更新深度图
-            updateDepthFilter(Vector2d(x, y), pt_curr, T_C_R, epipolar_direction, depth, depth_cov2);
         }
+        #pragma omp critical
+        { }
     }
-    printf("out of loop\n");
     return true;
 }
 
@@ -385,7 +392,7 @@ bool updateDepthFilter(
     const Vector2d &epipolar_direction,
     Mat &depth,
     Mat &depth_cov2) {
-    // 不知道这段还有没有人看
+    // 不知道这段还有没有人看 // 有啦！
     // 用三角化计算深度
     SE3d T_R_C = T_C_R.inverse();
     Vector3d f_ref = px2cam(pt_ref);

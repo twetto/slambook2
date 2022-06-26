@@ -18,11 +18,15 @@ find_package(fmt REQUIRED)
 set(FMT_LIBRARIES fmt::fmt)
 find_package(Sophus REQUIRED)
 include_directories(${Sophus_INCLUDE_DIRS})
+# OpenMP
+set(OPENMP_LIBRARIES OpenMP::OpenMP_CXX)
+find_package(OpenMP REQUIRED)
 
 set(THIRD_PARTY_LIBS
         ${OpenCV_LIBS}
         ${Sophus_LIBRARIES}
-        ${FMT_LIBRARIES})
+        ${FMT_LIBRARIES}
+        ${OPENMP_LIBRARIES})
 
 add_executable(dense_mapping dense_mapping.cpp)
 target_link_libraries(dense_mapping ${THIRD_PARTY_LIBS})
