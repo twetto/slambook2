@@ -46,6 +46,8 @@ $$
 
 其中，二元運算被稱為**李括號**。比方說外積就是一種李括號。
 
+題外話，我們[選擇單位元當作基準只是因為它在每個李群都有](https://math.stackexchange.com/questions/720469/lie-algebra-why-does-it-have-to-be-the-tangent-space-at-the-identity-of-a-lie-g)。
+
 要特別注意，在接下來的內容中我們默認李代數的數域$\mathbb{F} \in \mathbb{R}$，這樣我們就能專注在李代數集合(更具體一點是向量空間)跟李括號上面。
 
 ### 李代數$\mathfrak{so}(3)$
@@ -75,7 +77,7 @@ $$
 [\phi_1, \phi_2] = (\boldsymbol{\Phi}_1 \boldsymbol{\Phi}_2 - \boldsymbol{\Phi}_2 \boldsymbol{\Phi}_1)^\vee
 $$
 
-### 李代數$\mathfrak{se}(3)$
+### 李代數 $\mathfrak{se}(3)$
 
 $$
 \mathfrak{se}(3) = \{\boldsymbol{\xi} = 
