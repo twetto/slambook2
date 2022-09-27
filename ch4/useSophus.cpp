@@ -13,6 +13,7 @@ int main(int argc, char **argv) {
 
   // 沿Z轴转90度的旋转矩阵
   Matrix3d R = AngleAxisd(M_PI / 2, Vector3d(0, 0, 1)).toRotationMatrix();
+  //Matrix3d R = MatrixXd::Identity(3, 3);
   // 或者四元数
   Quaterniond q(R);
   Sophus::SO3d SO3_R(R);              // Sophus::SO3d可以直接从旋转矩阵构造
@@ -31,7 +32,8 @@ int main(int argc, char **argv) {
   cout << "so3 hat vee= " << Sophus::SO3d::vee(Sophus::SO3d::hat(so3)).transpose() << endl;
 
   // 增量扰动模型的更新
-  Vector3d update_so3(1e-4, 0, 0); //假设更新量为这么多
+  Vector3d update_so3(1e-4, 0, 0); // 假设更新量为这么多
+                                   // 就是沿著x軸旋轉1e-4 rad
   Sophus::SO3d SO3_updated = Sophus::SO3d::exp(update_so3) * SO3_R;
   cout << "SO3 updated = \n" << SO3_updated.matrix() << endl;
 
@@ -54,7 +56,7 @@ int main(int argc, char **argv) {
   // 最后，演示一下更新
   Vector6d update_se3; //更新量
   update_se3.setZero();
-  update_se3(0, 0) = 1e-4;
+  update_se3(0, 0) = 1e-4; // 往x方向前進1e-4
   Sophus::SE3d SE3_updated = Sophus::SE3d::exp(update_se3) * SE3_Rt;
   cout << "SE3 updated = " << endl << SE3_updated.matrix() << endl;
 
