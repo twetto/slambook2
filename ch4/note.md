@@ -112,7 +112,7 @@ $$
 定 $\phi$ 的模長和方向(單位向量)為 $\theta, \textbf{a}$ :
 
 $$
-exp(\phi) = exp(\theta\textbf{a}^\wedge) = \cos \theta \textbf{I} + (1 - \cos \theta) \textbf{a}\textbf{a}^T + \sin \theta \textbf{a}^\wedge
+\exp(\phi) = \exp(\theta\textbf{a}^\wedge) = \cos \theta \textbf{I} + (1 - \cos \theta) \textbf{a}\textbf{a}^T + \sin \theta \textbf{a}^\wedge
 $$
 
 **震驚！** $\mathfrak{so}(3)$ **的指數映射竟然就是羅德里格斯公式！**(想不到吧)
@@ -130,7 +130,7 @@ $$
 ### SE(3)上的指數映射
 
 $$
-exp(\boldsymbol{\xi}^\wedge) = 
+\exp(\boldsymbol{\xi}^\wedge) = 
 \begin{bmatrix}
 \sum_{n=0}^{\infty} \frac{1}{n!} (\phi^\wedge)^n & \sum_{n=0}^{\infty} \frac{1}{(n+1)!} (\phi^\wedge)^n \boldsymbol{\rho} \\
 \textbf{0}^T & 1
@@ -199,10 +199,33 @@ $$
 
 #### 直接求導
 
+我們對一個空間點$\textbf{p}$進行旋轉$\textbf{R}$，得到了$\textbf{Rp}$。我們要計算$\textbf{Rp}$對於$\textbf{R}$的導數，但是SO(3)沒有加法，所以我們轉到李代數上面進行導數計算。設$\textbf{R}$對應的李代數為$\phi$，計算:
+
 $$
+\begin{align}
+\frac{\partial (\exp(\phi^\wedge)\textbf{p})}{\partial \phi} &= \lim_{\delta \phi \to 0} \frac{\exp((\phi + \delta\phi)^\wedge)\textbf{p} - \exp(\phi^\wedge)\textbf{p}}{\delta \phi} \\
+&= \lim_{\delta \phi \to 0} \frac{\exp((\textbf{J}_l \delta\phi)^\wedge)\exp(\phi^\wedge)\textbf{p} - \exp(\phi^\wedge)\textbf{p}}{\delta\phi} \\
+&= \lim_{\delta \phi \to 0} \frac{(\textbf{I} + (\textbf{J}_l \delta\phi)^\wedge) \exp(\phi^\wedge)\textbf{p} - \exp(\phi^\wedge)\textbf{p}}{\delta\phi} \\
+&= \lim_{\delta \phi \to 0} \frac{(\textbf{J}_l \delta\phi)^\wedge \exp(\phi^\wedge)\textbf{p}}{\delta\phi} \\
+&= \lim_{\delta \phi \to 0} \frac{-(\exp(\phi^\wedge)\textbf{p})^\wedge\textbf{J}_l \delta\phi}{\delta\phi} = -(\textbf{Rp})^\wedge\textbf{J}_l
+\end{align}
 $$
 
+第一$\rightarrow$第二行為PCH線性近似，二$\rightarrow$三為泰勒展開捨去高階項的近似(根據L'Hopital's rule 取極限後可直接等號)，4 $\rightarrow$ 5將反對稱符號看作外積，交換之後變號。不過$\textbf{J}_l$的計算還是比較複雜的，所以就有了下面的擾動模型。
+
 #### 擾動模型(左乘)
+
+對$\textbf{R}$進行一次擾動$\Delta\textbf{R}$，看$\textbf{Rp}$相對於$\Delta\textbf{R}$的變化率。以左擾動為例：
+
+$$
+\begin{align}
+\frac{\partial(\textbf{Rp})}{\partial\varphi} &= \lim_{\varphi\to 0} \frac{\exp(\varphi^\wedge)\exp(\phi^\wedge)\textbf{p} - \exp(\phi^\wedge)\textbf{p}}{\varphi} \\
+&= \lim_{\varphi\to 0} \frac{(\textbf{I}+\varphi^\wedge) \exp(\phi^\wedge) \textbf{p} - \exp(\phi^\wedge)\textbf{p}}{\varphi} \\
+&= \lim_{\varphi\to 0} \frac{\varphi^\wedge\textbf{Rp}}{\varphi} = \lim_{\varphi\to 0} \frac{-(\textbf{Rp})^\wedge \varphi}{\varphi} = -(\textbf{Rp})^\wedge
+\end{align}
+$$
+
+(問：怎麼在實作上區分直接求導/擾動模型？)
 
 ### SE(3)上的李代數求導
 
@@ -210,9 +233,36 @@ $$
 
 #### 擾動模型(左乘)
 
+設變換$\textbf{T}$的李代數為$\boldsymbol{\xi}$，左乘一擾動$\Delta\textbf{T} = \exp(\delta \boldsymbol{\xi}^\wedge)$；其中設$\delta\boldsymbol{\xi} = [\delta \boldsymbol{\rho}, \delta \phi]^T$:
+
+$$
+\begin{align}
+\frac{\partial (\textbf{Tp})}{\partial \delta \boldsymbol{\xi}} &= \lim_{\delta\boldsymbol{\xi} \to 0} \frac{\exp(\delta\boldsymbol{\xi}^\wedge)\exp(\boldsymbol{\xi}^\wedge)\textbf{p} - \exp(\boldsymbol{\xi}^\wedge)\textbf{p}}{\delta\boldsymbol{\xi}} \\
+&= \lim_{\delta\boldsymbol{\xi} \to 0} \frac{(\textbf{I} + \delta\boldsymbol{\xi}^\wedge)\exp(\boldsymbol{\xi}^\wedge)\textbf{p} - \exp(\boldsymbol{\xi}^\wedge)\textbf{p}}{\delta\boldsymbol{\xi}} \\
+&= \lim_{\delta\boldsymbol{\xi} \to 0} \frac{\delta\boldsymbol{\xi}^\wedge \exp(\boldsymbol{\xi}^\wedge)\textbf{p}}{\delta\boldsymbol{\xi}} \\ 
+&= \lim_{\delta\boldsymbol{\xi} \to 0}
+  \frac{\begin{bmatrix}
+    \delta\phi^\wedge & \delta \boldsymbol{\rho} \\
+    \textbf{0}^T & 0 \end{bmatrix}\begin{bmatrix}
+    \textbf{Rp}+\textbf{t} \\
+    1 \end{bmatrix}
+  }{\delta\boldsymbol{\xi}} \\
+&= \lim_{\delta\boldsymbol{\xi} \to 0}
+  \frac{\begin{bmatrix}
+    \delta\phi^\wedge(\textbf{Rp}+\textbf{t}) + \delta \boldsymbol{\rho} \\
+    \textbf{0}^T \end{bmatrix}
+  }{[\delta \boldsymbol{\rho}, \delta \phi]^T} = \left[\begin{array}{cc}
+\boldsymbol{I} & -(\boldsymbol{R} \boldsymbol{p}+\boldsymbol{t})^{\wedge} \\
+\mathbf{0}^{\mathrm{T}} & \mathbf{0}^{\mathrm{T}}
+\end{array}\right] \stackrel{\text { def }}{=}(\boldsymbol{T} \boldsymbol{p})^{\odot}
+\end{align}
+$$
+
 ## 實踐: Sophus
 
 ## 相似變換群與其李代數
+
+雖然單目視覺會用到，但我的終極目標並沒有將相似變換群列為必學，所以這邊直接略過。我還是有看喔。沒有偷懶喔。嗯對
 
 ## 習題
 
@@ -233,13 +283,13 @@ $$
 **證明：**
 
 $$
-\textbf{R} exp(\textbf{p}^\wedge) \textbf{R}^T = exp((\textbf{Rp})^\wedge)
+\textbf{R} \exp(\textbf{p}^\wedge) \textbf{R}^T = \exp((\textbf{Rp})^\wedge)
 $$
 
 **該式稱為SO(3)上的** ***伴隨*** **性質。同樣地，在SE(3)上也有伴隨性質：**
 
 $$
-\textbf{T} exp(\boldsymbol{\xi}^\wedge)\textbf{T}^{-1} = exp((Ad(\textbf{T})\boldsymbol{\xi})^\wedge)
+\textbf{T} \exp(\boldsymbol{\xi}^\wedge)\textbf{T}^{-1} = \exp((Ad(\textbf{T})\boldsymbol{\xi})^\wedge)
 $$
 
 **其中：**
