@@ -218,7 +218,7 @@ $$
 \end{align}
 $$
 
-第一$\rightarrow$第二行為PCH線性近似，二$\rightarrow$三為泰勒展開捨去高階項的近似(根據L'Hopital's rule 取極限後可直接等號)，4 $\rightarrow$ 5將反對稱符號看作外積，交換之後變號。不過$\textbf{J}_l$的計算還是比較複雜的，所以就有了下面的擾動模型。
+第一$\rightarrow$第二行為PCH線性近似，二$\rightarrow$三為泰勒展開捨去高階項的近似(對應到式4.9)(根據L'Hopital's rule 取極限後可直接等號)，4 $\rightarrow$ 5將反對稱符號看作外積，交換之後變號。不過$\textbf{J}_l$的計算還是比較複雜的，所以就有了下面的擾動模型。
 
 #### 擾動模型(左乘)
 
