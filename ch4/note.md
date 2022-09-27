@@ -199,7 +199,14 @@ $$
 
 #### 直接求導
 
-我們對一個空間點$\textbf{p}$進行旋轉$\textbf{R}$，得到了$\textbf{Rp}$。我們要計算$\textbf{Rp}$對於$\textbf{R}$的導數，但是SO(3)沒有加法，所以我們轉到李代數上面進行導數計算。設$\textbf{R}$對應的李代數為$\phi$，計算:
+我們對一個空間點$\textbf{p}$進行旋轉$\textbf{R}$，得到了$\textbf{Rp}$。我們要計算$\textbf{Rp}$對於$\textbf{R}$的導數：
+
+$$
+\frac{\partial(\textbf{Rp})}{\partial\textbf{R}}
+$$
+(這只是一個不正式的表達，我們不能按照矩陣微分來定義導數。)
+
+但是SO(3)沒有加法，所以我們轉到李代數上面進行導數計算。設$\textbf{R}$對應的李代數為$\phi$，改為計算:
 
 $$
 \begin{align}
@@ -215,7 +222,7 @@ $$
 
 #### 擾動模型(左乘)
 
-對$\textbf{R}$進行一次擾動$\Delta\textbf{R}$，看$\textbf{Rp}$相對於$\Delta\textbf{R}$的變化率。以左擾動為例：
+對$\textbf{R}$進行一次擾動$\Delta\textbf{R}$，看$\textbf{Rp}$相對於$\Delta\textbf{R}$的變化率。以左擾動為例，設$\Delta\textbf{R}$對應的李代數為$\varphi$，對$\varphi$求導：
 
 $$
 \begin{align}
@@ -259,6 +266,8 @@ $$
 $$
 
 ## 實踐: Sophus
+
+照著範例程式跑了一遍。教你熟悉Sophus作為一個SO(3), SE(3), $\mathfrak{so}(3)$, $\mathfrak{se}(3)$計算的各種用法。因為是基於Eigen寫的庫，所以搭配本講教的知識後很好理解。
 
 ## 相似變換群與其李代數
 
