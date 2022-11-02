@@ -34,9 +34,7 @@ $$
 利用貝氏定理估計x, y的分佈：
 
 $$
-P(\boldsymbol{x}, \boldsymbol{y} | \boldsymbol{z}, \boldsymbol{u})
-=
-\frac{P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})P(\boldsymbol{x}, \boldsymbol{y})}{P(\boldsymbol{z}, \boldsymbol{u})}
+P(\boldsymbol{x}, \boldsymbol{y} | \boldsymbol{z}, \boldsymbol{u}) = \frac{P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})P(\boldsymbol{x}, \boldsymbol{y})}{P(\boldsymbol{z}, \boldsymbol{u})}
 \propto P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})P(\boldsymbol{x}, \boldsymbol{y})
 $$
 
