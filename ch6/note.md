@@ -51,7 +51,7 @@ $$
 當然如果你不知道先驗分佈，也可以改求**最大似然估計**(Maximum likelihood estimation, MLE)：
 
 $$
-(\boldsymbol{x}, \boldsymbol{y})^*_{MLE} \arg\max P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})
+(\boldsymbol{x}, \boldsymbol{y})^*_{MLE} = \arg\max P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})
 $$
 
 相當於把上面的(2)給省略掉了；更白話一點說，就是「**在什麼樣的狀態(姿態, 路標位置, etc.)下，最可能產生現在觀測到的數據(角點在圖片空間的位置, IMU讀數, etc.)**」(抄課本真方便)。
