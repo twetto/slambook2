@@ -13,7 +13,7 @@ z_{k,j} = h(y_j, x_k) + v_{k,j}
 \end{cases}
 $$
 
-在討論過相機位姿的表示方法(第三/四講)還有針孔相機模型(第五講)後，我們可以來對這個方程具體地參數化一下：位姿$\boldsymbol{x}_k$可以由$\boldsymbol{T}_k \in SE(3)$表達。觀測方程由針孔模型給定：
+在討論過相機位姿的表示方法(第三/四講)還有針孔相機模型(第五講)後，我們可以來對這個方程具體地參數化一下：位姿 $\boldsymbol{x}_k$ 可以由 $\boldsymbol{T}_k \in SE(3)$ 表達。觀測方程由針孔模型給定：
 
 $$
 s\boldsymbol{z}_{k,j} = \boldsymbol{K}(\boldsymbol{R}_k \boldsymbol{y}_j + \boldsymbol{t}_k)
@@ -23,13 +23,13 @@ z:像素位置，y:路標點，x:相機位姿。另外還有雜訊，為了簡�
 
 處理這種狀態估計的問題大概分成**增量**(incremental)跟**批量**(batch)兩種方法，看是要每次數據更新就處理一次還是一次處理很多筆數據。增量的經典作法就是卡爾曼濾波，批量的部份，為了追求實時性又不會太不準，SLAM上面經常是折衷一點，僅拿現在附近的一段軌跡進行最佳化(滑動窗口最佳化)。本講我們先學習批量方法，因為學起來比較簡單。
 
-已知控制輸入$\boldsymbol{u}$和觀測數據$\boldsymbol{z}$的條件下求狀態$\boldsymbol{x}, \boldsymbol{y}$的條件概率分布：
+已知控制輸入 $\boldsymbol{u}$ 和觀測數據 $\boldsymbol{z}$ 的條件下求狀態 $\boldsymbol{x}, \boldsymbol{y}$ 的條件概率分布：
 
 $$
 P(\boldsymbol{x}, \boldsymbol{y} | \boldsymbol{z}, \boldsymbol{u})
 $$
 
-當然大部分的時候不拿(拿不到)控制訊號，只有觀測方程，我們就把u給拿掉：$P(\boldsymbol{x}, \boldsymbol{y} | \boldsymbol{z})$。
+當然大部分的時候不拿(拿不到)控制訊號，只有觀測方程，我們就把u給拿掉： $P(\boldsymbol{x}, \boldsymbol{y} | \boldsymbol{z})$ 。
 
 利用貝氏定理估計x, y的分佈：
 
@@ -40,7 +40,7 @@ $$
 
 雖然貝氏定理高中就教過了，以防萬一忘記它主要就是說A, B兩種事件中，AB交集機率=A機率\*已知A下AB交集機率=B機率\*已知B下AB交集機率，然後等式兩邊同除啥的。
 
-等式左邊稱為**後驗概率**，右側的$P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})$為**似然**(likelihood)，$P(\boldsymbol{x}, \boldsymbol{y})$稱為**先驗**(Prior)。**直接求後驗分佈是困難的，但求一個狀態最優估計，使得在該狀態下後驗概率最大化**(Maximum-a-posterioli, MAP)(直接照抄課本)，則是可行的：
+等式左邊稱為**後驗概率**，右側的 $P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})$ 為**似然**(likelihood)， $P(\boldsymbol{x}, \boldsymbol{y})$ 稱為**先驗**(Prior)。**直接求後驗分佈是困難的，但求一個狀態最優估計，使得在該狀態下後驗概率最大化**(Maximum-a-posterioli, MAP)(直接照抄課本)，則是可行的：
 
 $$
 (\boldsymbol{x}, \boldsymbol{y})^*_{MAP} = \arg\max P(\boldsymbol{x}, \boldsymbol{y} | \boldsymbol{z}, \boldsymbol{u}) = \arg\max P(\boldsymbol{z}, \boldsymbol{u} | \boldsymbol{x}, \boldsymbol{y})P(\boldsymbol{x}, \boldsymbol{y})
