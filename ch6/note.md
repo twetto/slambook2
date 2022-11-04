@@ -70,15 +70,97 @@ $$
 
 ## 非線性最小二乘
 
-求目標函數最小值，比較簡單的是找梯度為零的地方，不過有的時候梯度函數很複雜，我們就改用迭代的方式，一次只走一小步，直到找到最小值。下面介紹幾個迭代方法。
+考慮一個最小二乘問題：
+
+$$
+\min_x F(\boldsymbol{x}) = \frac{1}{2}\|f(\boldsymbol{x})\|^2_2
+$$
+
+求目標函數 $F$ 最小值，比較簡單的是找梯度為零的地方，不過有的時候梯度函數很複雜，我們就改用迭代的方式，一次只走一小步，直到找到最小值。下面介紹幾個迭代方法。
 
 ### 一階/二階梯度法
 
-要找增量最直觀的就是對目標函數泰勒展開，拿導數一階雅可比跟二階海塞矩陣。如果只取一階就是最速下降法，取一/二階就是牛頓法。具體的矩陣求導請參考附錄。
+要找增量最直觀的就是對目標函數泰勒展開，拿導數一階雅可比跟二階海塞矩陣。如果只取一階就是最速下降法，取一/二階就是牛頓法。具體的矩陣求導請參考附錄。有時候一階太貪心會走出鋸齒狀路線，反而增加收斂步數，而二階海塞有點難算，所以以下介紹其他方法。
 
 ### 高斯牛頓法
 
-### Levenburg-Marquadt 法
+與其直接求目標函數 $F$ 最小值，不如改對 $f(\boldsymbol{x})$ 進行一階泰勒展開：
+
+$$
+f(\boldsymbol{x} + \Delta \boldsymbol{x}) \approx f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})^T \Delta \boldsymbol{x}
+$$
+
+並改求：
+
+$$
+\Delta\boldsymbol{x}^* = \arg\min_{\Delta\boldsymbol{x}} \frac{1}{2} \|f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})^T\Delta\boldsymbol{x}\|^2
+$$
+
+展開：
+
+$$
+\begin{align}
+\frac{1}{2} \|f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})^T\Delta\boldsymbol{x}\|^2 &= \frac{1}{2} \Bigl(f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})^T\Delta\boldsymbol{x}\Bigr)^T \Bigl(f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})^T\Delta\boldsymbol{x}\Bigr) \\
+&= \frac{1}{2} \Bigl( \|f(\boldsymbol{x})\|^2_2 + 2f(\boldsymbol{x})\boldsymbol{J}(\boldsymbol{x})^T \Delta\boldsymbol{x} + \Delta \boldsymbol{x}^T\boldsymbol{J}(\boldsymbol{x})\boldsymbol{J}(\boldsymbol{x})^T \Delta\boldsymbol{x} \Bigr)
+\end{align}
+$$
+
+再求對增量 $\Delta\boldsymbol{x}$ 的導數(偏微)，令其為零：
+
+$$
+\boldsymbol{J}(\boldsymbol{x})f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})\boldsymbol{J}^T(\boldsymbol{x})\Delta\boldsymbol{x} = 0
+$$
+
+$$
+\boldsymbol{J}(\boldsymbol{x})\boldsymbol{J}^T(\boldsymbol{x})\Delta\boldsymbol{x} = -\boldsymbol{J}(\boldsymbol{x})f(\boldsymbol{x})
+$$
+
+把左邊係數定義為H，右邊定義為g，我們把它記成：
+
+$$
+\boldsymbol{H}\Delta\boldsymbol{x} = \boldsymbol{g}
+$$
+
+這個方程被叫作增量方程、高斯牛頓方程(G-N equation)、正規方程(normal equation)。我們用 $JJ^T$ 作為牛頓法裡面二階海塞的近似，這樣就不用計算「真正的」 $H$ 了。
+
+當然這種近似有可能會出問題，像是 $JJ^T$ 奇異或病態時 $\Delta x$ 會不穩甚至無法收斂，或者求出的 $\Delta x$ 有時會太大到超出了近似的有效範圍之類的。
+
+### Levenburg-Marquardt 法
+
+我們在高斯牛頓中給 $\Delta \boldsymbol{x}$ 添加一個叫作**信賴區域**的範圍來限制它不要跑到近似不準的地方，定義在什麼情況下二階近似是有效的。我們拿一個指標來確認有效程度：
+
+$$
+\rho = \frac{f(\boldsymbol{x} + \Delta \boldsymbol{x} ) - f( \boldsymbol{x})}{\boldsymbol{J}(\boldsymbol{x})^T \Delta \boldsymbol{x}}
+$$
+
+上式分子是實際函數下降的值，分母是近似模型預估下降的值。越接近1表示估計越準，如果太小就縮小近似範圍，如果很準就放大範圍：
+
+$$
+\Delta\boldsymbol{x}^* = \arg\min_{\Delta\boldsymbol{x}} \frac{1}{2} \|f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})^T\Delta\boldsymbol{x}\|^2, \; s.t. \|\boldsymbol{D} \Delta \boldsymbol{x} \|^2 \leq \mu \\
+$$
+Calculate $\rho$ .
+$$
+\begin{cases}
+if\; \rho > \frac{3}{4},\; then\; \mu = 2\mu \\
+if\; \rho < \frac{1}{4},\; then\; \mu = 0.5\mu
+\end{cases}
+$$
+
+如此就等於是把增量限制在半徑為 $\mu$ 的球中。如果係數矩陣 $\boldsymbol{D}$ 是單位矩陣就是一個正球形(Levenberg)，如果非負對角矩陣就是橢球(Marquardt)；實務上常用 $\boldsymbol{J}^T\boldsymbol{J}$ 的對角元素平方根，等於是讓橢球梯度大的方向比較長，梯度小的方向比較短。
+
+我們用拉格朗日乘數 $\lambda$ 將這個球形限制放到目標函數：
+
+$$
+\mathcal{L}(\Delta\boldsymbol{x},\; \lambda) = \frac{1}{2} \Bigl\|f(\boldsymbol{x}) + \boldsymbol{J}(\boldsymbol{x})^T\Delta\boldsymbol{x}) \Bigr\|^2 + \frac{\lambda}{2}\Bigl( \|\boldsymbol{D}\Delta\boldsymbol{x}\|^2 - \mu \Bigr)
+$$
+
+一樣對 $\Delta\boldsymbol{x}$ 偏微，另其為零：
+
+$$
+(\boldsymbol{H}+\lambda\boldsymbol{D}^T\boldsymbol{D}) \Delta\boldsymbol{x} = \boldsymbol{g}
+$$
+
+可以看到這裡比高斯牛頓多了一項 $\lambda\boldsymbol{D}^T\boldsymbol{D}$ 。當 $\lambda$ 比較小時，表示這個問題不錯，可以用高斯牛頓法；比較大時，表示二次近似不好，改用(類)一階最速下降法，步長由 $\mu$ 來調整。
 
 ## 範例：曲線擬合問題
 
