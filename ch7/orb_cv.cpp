@@ -1,5 +1,6 @@
 #include <iostream>
 #include <opencv2/core/core.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <chrono>
@@ -13,8 +14,10 @@ int main(int argc, char **argv) {
     return 1;
   }
   //-- 读取图像
-  Mat img_1 = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-  Mat img_2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+  //Mat img_1 = imread(argv[1], CV_LOAD_IMAGE_COLOR);
+  //Mat img_2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
+  Mat img_1 = imread(argv[1], IMREAD_COLOR);
+  Mat img_2 = imread(argv[2], IMREAD_COLOR);
   assert(img_1.data != nullptr && img_2.data != nullptr);
 
   //-- 初始化
@@ -22,16 +25,22 @@ int main(int argc, char **argv) {
   Mat descriptors_1, descriptors_2;
   Ptr<FeatureDetector> detector = ORB::create();
   Ptr<DescriptorExtractor> descriptor = ORB::create();
+  auto orb = ORB::create();
   Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce-Hamming");
+  printf("Init OK\n");
 
   //-- 第一步:检测 Oriented FAST 角点位置
   chrono::steady_clock::time_point t1 = chrono::steady_clock::now();
-  detector->detect(img_1, keypoints_1);
-  detector->detect(img_2, keypoints_2);
+  printf("clock OK\n");
+  //detector->detect(img_1, keypoints_1);
+  //detector->detect(img_2, keypoints_2);
+  orb->detectAndCompute(img_1, Mat(), keypoints_1, descriptors_1, false);
+  orb->detectAndCompute(img_2, Mat(), keypoints_2, descriptors_2, false);
+  printf("ORB detection OK\n");
 
   //-- 第二步:根据角点位置计算 BRIEF 描述子
-  descriptor->compute(img_1, keypoints_1, descriptors_1);
-  descriptor->compute(img_2, keypoints_2, descriptors_2);
+  //descriptor->compute(img_1, keypoints_1, descriptors_1);
+  //descriptor->compute(img_2, keypoints_2, descriptors_2);
   chrono::steady_clock::time_point t2 = chrono::steady_clock::now();
   chrono::duration<double> time_used = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
   cout << "extract ORB cost = " << time_used.count() << " seconds. " << endl;
@@ -39,6 +48,7 @@ int main(int argc, char **argv) {
   Mat outimg1;
   drawKeypoints(img_1, keypoints_1, outimg1, Scalar::all(-1), DrawMatchesFlags::DEFAULT);
   imshow("ORB features", outimg1);
+  printf("ORB description OK\n");
 
   //-- 第三步:对两幅图像中的BRIEF描述子进行匹配，使用 Hamming 距离
   vector<DMatch> matches;
@@ -47,6 +57,7 @@ int main(int argc, char **argv) {
   t2 = chrono::steady_clock::now();
   time_used = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
   cout << "match ORB cost = " << time_used.count() << " seconds. " << endl;
+  printf("Feature matching 1 OK\n");
 
   //-- 第四步:匹配点对筛选
   // 计算最小距离和最大距离
@@ -57,6 +68,7 @@ int main(int argc, char **argv) {
 
   printf("-- Max dist : %f \n", max_dist);
   printf("-- Min dist : %f \n", min_dist);
+  printf("Feature matching 2 OK\n");
 
   //当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值30作为下限.
   std::vector<DMatch> good_matches;
@@ -73,6 +85,7 @@ int main(int argc, char **argv) {
   drawMatches(img_1, keypoints_1, img_2, keypoints_2, good_matches, img_goodmatch);
   imshow("all matches", img_match);
   imshow("good matches", img_goodmatch);
+  printf("draw OK\n");
   waitKey(0);
 
   return 0;
