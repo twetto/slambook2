@@ -33,8 +33,6 @@ int main(int argc, char **argv) {
     return 1;
   }
   //-- 读取图像
-  //Mat img_1 = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-  //Mat img_2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
   Mat img_1 = imread(argv[1], IMREAD_COLOR);
   Mat img_2 = imread(argv[2], IMREAD_COLOR);
   assert(img_1.data && img_2.data && "Can not load images!");
@@ -76,7 +74,7 @@ void find_feature_matches(const Mat &img_1, const Mat &img_2,
   //-- 初始化
   Mat descriptors_1, descriptors_2;
   // used in OpenCV3
-  Ptr<FeatureDetector> detector = ORB::create();
+  Ptr<FeatureDetector> detector = GFTTDetector::create();
   Ptr<DescriptorExtractor> descriptor = ORB::create();
   // use this if you are in OpenCV2
   // Ptr<FeatureDetector> detector = FeatureDetector::create ( "ORB" );

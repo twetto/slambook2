@@ -14,8 +14,6 @@ int main(int argc, char **argv) {
     return 1;
   }
   //-- 读取图像
-  //Mat img_1 = imread(argv[1], CV_LOAD_IMAGE_COLOR);
-  //Mat img_2 = imread(argv[2], CV_LOAD_IMAGE_COLOR);
   Mat img_1 = imread(argv[1], IMREAD_COLOR);
   Mat img_2 = imread(argv[2], IMREAD_COLOR);
   assert(img_1.data != nullptr && img_2.data != nullptr);
@@ -23,7 +21,7 @@ int main(int argc, char **argv) {
   //-- 初始化
   std::vector<KeyPoint> keypoints_1, keypoints_2;
   Mat descriptors_1, descriptors_2;
-  Ptr<FeatureDetector> detector = ORB::create();
+  Ptr<FeatureDetector> detector = GFTTDetector::create();
   Ptr<DescriptorExtractor> descriptor = ORB::create();
   auto orb = ORB::create();
   Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce-Hamming");
@@ -32,15 +30,13 @@ int main(int argc, char **argv) {
   //-- 第一步:检测 Oriented FAST 角点位置
   chrono::steady_clock::time_point t1 = chrono::steady_clock::now();
   printf("clock OK\n");
-  //detector->detect(img_1, keypoints_1);
-  //detector->detect(img_2, keypoints_2);
-  orb->detectAndCompute(img_1, Mat(), keypoints_1, descriptors_1, false);
-  orb->detectAndCompute(img_2, Mat(), keypoints_2, descriptors_2, false);
+  detector->detect(img_1, keypoints_1);
+  detector->detect(img_2, keypoints_2);
   printf("ORB detection OK\n");
 
   //-- 第二步:根据角点位置计算 BRIEF 描述子
-  //descriptor->compute(img_1, keypoints_1, descriptors_1);
-  //descriptor->compute(img_2, keypoints_2, descriptors_2);
+  descriptor->compute(img_1, keypoints_1, descriptors_1);
+  descriptor->compute(img_2, keypoints_2, descriptors_2);
   chrono::steady_clock::time_point t2 = chrono::steady_clock::now();
   chrono::duration<double> time_used = chrono::duration_cast<chrono::duration<double>>(t2 - t1);
   cout << "extract ORB cost = " << time_used.count() << " seconds. " << endl;
