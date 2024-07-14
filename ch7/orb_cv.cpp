@@ -10,7 +10,7 @@ using namespace cv;
 
 int main(int argc, char **argv) {
   if (argc != 3) {
-    cout << "usage: feature_extraction img1 img2" << endl;
+    cout << "usage: orb_cv img1 img2" << endl;
     return 1;
   }
   //-- 读取图像
@@ -21,9 +21,8 @@ int main(int argc, char **argv) {
   //-- 初始化
   std::vector<KeyPoint> keypoints_1, keypoints_2;
   Mat descriptors_1, descriptors_2;
-  Ptr<FeatureDetector> detector = GFTTDetector::create();
+  Ptr<FeatureDetector> detector = ORB::create();
   Ptr<DescriptorExtractor> descriptor = ORB::create();
-  auto orb = ORB::create();
   Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce-Hamming");
   printf("Init OK\n");
 
@@ -68,11 +67,14 @@ int main(int argc, char **argv) {
 
   //当描述子之间的距离大于两倍的最小距离时,即认为匹配有误.但有时候最小距离会非常小,设置一个经验值30作为下限.
   std::vector<DMatch> good_matches;
+  int count = 0;
   for (int i = 0; i < descriptors_1.rows; i++) {
     if (matches[i].distance <= max(2 * min_dist, 30.0)) {
       good_matches.push_back(matches[i]);
+      count++;
     }
   }
+  printf("matches: %d/%d\n", count, descriptors_1.rows);
 
   //-- 第五步:绘制匹配结果
   Mat img_match;

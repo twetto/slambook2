@@ -35,6 +35,16 @@ void ComputeORB(const cv::Mat &img, vector<cv::KeyPoint> &keypoints, vector<Desc
  */
 void BfMatch(const vector<DescType> &desc1, const vector<DescType> &desc2, vector<cv::DMatch> &matches);
 
+// Portable function to count the number of 1's in an unsigned integer
+uint32_t popcount(uint32_t x) {
+  x = x - ((x >> 1) & 0x55555555);                // Put count of each 2 bits into those 2 bits
+  x = (x & 0x33333333) + ((x >> 2) & 0x33333333); // Put count of each 4 bits into those 4 bits
+  x = (x + (x >> 4)) & 0x0F0F0F0F;                // Put count of each 8 bits into those 8 bits
+  x = x + (x >> 8);                               // Put count of each 16 bits into those 16 bits
+  x = x + (x >> 16);                              // Put count of each 32 bits into those 32 bits
+  return x & 0x0000003F;                          // Only keep the lowest 6 bits
+}
+
 int main(int argc, char **argv) {
 
   // load image
@@ -381,8 +391,11 @@ void ComputeORB(const cv::Mat &img, vector<cv::KeyPoint> &keypoints, vector<Desc
                          + kp.pt;
         cv::Point2f qq = cv::Point2f(cos_theta * q.x - sin_theta * q.y, sin_theta * q.x + cos_theta * q.y)
                          + kp.pt;
-        if (img.at<uchar>(pp.y, pp.x) < img.at<uchar>(qq.y, qq.x)) {
-          d |= 1 << k;
+        if (pp.x >= 0 && pp.x < img.cols && pp.y >= 0 && pp.y < img.rows &&
+            qq.x >= 0 && qq.x < img.cols && qq.y >= 0 && qq.y < img.rows) {
+          if (img.at<uchar>(pp.y, pp.x) < img.at<uchar>(qq.y, qq.x)) {
+            d |= 1 << k;
+          }
         }
       }
       desc[i] = d;
@@ -399,12 +412,13 @@ void BfMatch(const vector<DescType> &desc1, const vector<DescType> &desc2, vecto
 
   for (size_t i1 = 0; i1 < desc1.size(); ++i1) {
     if (desc1[i1].empty()) continue;
-    cv::DMatch m{i1, 0, 256};
+    cv::DMatch m{static_cast<int>(i1), 0, 256};
     for (size_t i2 = 0; i2 < desc2.size(); ++i2) {
       if (desc2[i2].empty()) continue;
       int distance = 0;
       for (int k = 0; k < 8; k++) {
-        distance += _mm_popcnt_u32(desc1[i1][k] ^ desc2[i2][k]);
+        //distance += _mm_popcnt_u32(desc1[i1][k] ^ desc2[i2][k]);
+        distance += popcount(desc1[i1][k] ^ desc2[i2][k]);  // slower but portable
       }
       if (distance < d_max && distance < m.distance) {
         m.distance = distance;
